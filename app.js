@@ -7,25 +7,10 @@ var bodyParser = require('body-parser');
 
 var index = require('./routes/index');
 var users = require('./routes/users');
+var departments = require('./routes/departments');
 
 var app = express();
 
-//var vash = require('vash');
-//var element = require('./helper/element-gen');
-
-//vash.helpers.DropDownList = function(selector, source){
-// element.DropDownList = function(selector, source){
-//   var options = "";
-
-//   source.forEach(function(obj) {
-//     options += '<option value="'+obj.value+'">'+obj.text+'</option>';
-//   });
-
-//   var select = '<select id="'+selector+'" name="'+selector+'">'+options+'</select>';
-//   return select;
-// };
-
-// view engine setup
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'vash');
 
@@ -39,6 +24,7 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 app.use('/', index);
 app.use('/users', users);
+app.use('/departments', departments);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
