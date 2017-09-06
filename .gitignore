@@ -1,5 +1,8 @@
+#Allow
+!node_modules/
+
 # Ignore
-node_modules/**/*
+node_modules/*
 
 # Allow
-!node_modules/vash/*
+!node_modules/vash/
