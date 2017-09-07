@@ -38,8 +38,10 @@
                                 </div>
                             </div>
                         </form>
+                        @html.ActionLink("", {class:"btn btn-primary btn-sm", href:"/departments/"}, '<i class="fa fa-chevron-left"></i> Back To Home')
                     </div>
                 </div>
+                
             </div>
         </div>
     })

@@ -5,10 +5,14 @@ var router = express.Router();
 var db = require('../db');
 
 router.get('/', function (req, res, next) {
-    res.render('departments_index', {
-        Title: "Department",
-        Action: "Index"
+    db.get().collection('Departments').find().toArray(function(err, result){
+        res.render('departments_index', {
+            Title: "Departments",
+            Action: "Home",
+            Departments : result
+        });
     });
+    
 });
 
 router.get('/add', function(req, res, next){
@@ -25,6 +29,10 @@ router.post('/add', function(req, res, next){
         console.log('Data saved.');
         res.redirect('/departments');
     });
+});
+
+router.get('/edit/:id', function(req, res, next){
+    return console.log(req);
 });
 
 module.exports = router;
