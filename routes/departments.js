@@ -17,4 +17,9 @@ router.get('/add', function(req, res, next){
     res.render('departments_add', model);
 });
 
+router.post('/add', function(req, res, next){
+    console.log(req);
+    res.send('posted');
+});
+
 module.exports = router;
