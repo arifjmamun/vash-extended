@@ -11,6 +11,10 @@ var departments = require('./routes/departments');
 
 var app = express();
 
+//database purpose
+var db = require('./db');
+
+
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'vash');
 
@@ -25,6 +29,13 @@ app.use(express.static(path.join(__dirname, 'public')));
 app.use('/', index);
 app.use('/users', users);
 app.use('/departments', departments);
+
+db.connect('mongodb://localhost:27017/UV_DB', function(err){
+  if (err) {
+    console.log('Unable to connect to Mongo.');
+    process.exit(1);
+  }
+});
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
@@ -44,7 +55,7 @@ app.use(function(err, req, res, next) {
   res.render('error');
 });
 
-app.listen(3000, function(){
+app.listen(3200, function(){
   console.log('Listening');
 });
 

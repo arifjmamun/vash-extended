@@ -2,6 +2,8 @@ var express = require('express');
 var extension = require('../helper/extension');
 var router = express.Router();
 
+var db = require('../db');
+
 router.get('/', function (req, res, next) {
     res.render('departments_index', {
         Title: "Department",
@@ -18,8 +20,11 @@ router.get('/add', function(req, res, next){
 });
 
 router.post('/add', function(req, res, next){
-    console.log(req);
-    res.send('posted');
+    db.get().collection('Departments').save(req.body, function(err, result){
+        if(err) return console.log(err);
+        console.log('Data saved.');
+        res.redirect('/departments');
+    });
 });
 
 module.exports = router;
