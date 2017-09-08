@@ -3,6 +3,7 @@ var extension = require('../helper/extension');
 var router = express.Router();
 
 var db = require('../db');
+var objectId = require('mongodb').ObjectId;
 
 router.get('/', function (req, res, next) {
     db.get().collection('Departments').find().toArray(function(err, result){
@@ -32,7 +33,17 @@ router.post('/add', function(req, res, next){
 });
 
 router.get('/edit/:id', function(req, res, next){
-    return console.log(req);
+    var id = req.params.id;
+    db.get().collection('Departments').findOne({"_id":objectId(id)}, function(err, result){
+        console.log(result);
+        if(err) return console.log(err);
+        res.render('departments_edit', {
+            Title: "Departments",
+            Action: "Edit",
+            Department : result
+        });
+    });
+    //res.send('edit');
 });
 
 module.exports = router;
