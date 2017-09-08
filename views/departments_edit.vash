@@ -15,8 +15,8 @@
                         </div>
                     </div>
                     <div class="ibox-content">
-                        <form method="post" action="/departments/add" class="form-horizontal">
-                            <input type="hidden" id="@model.Department._id" name="_id">
+                        <form method="post" action="/departments/edit" class="form-horizontal">
+                            <input type="hidden" value="@model.Department._id" name="_id">
                             <div class="form-group">
                                 @html.Label("Name", "Name", {class:"control-label col-sm-2"})
                                 <div class="col-sm-6">
@@ -38,7 +38,7 @@
                                 </div>
                             </div>
                         </form>
-                        @html.ActionLink("", {class:"btn btn-primary btn-sm", href:"/departments/"}, '<i class="fa fa-chevron-left"></i> Back To Home')
+                        @html.ActionLink("", {class:"btn btn-primary btn-sm", href:"/departments"}, '<i class="fa fa-chevron-left"></i> Back To Home')
                     </div>
                 </div>
                 

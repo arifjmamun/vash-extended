@@ -26,24 +26,67 @@ router.get('/add', function(req, res, next){
 
 router.post('/add', function(req, res, next){
     db.get().collection('Departments').save(req.body, function(err, result){
-        if(err) return console.log(err);
+        if(err) throw err;
         console.log('Data saved.');
         res.redirect('/departments');
     });
 });
 
 router.get('/edit/:id', function(req, res, next){
-    var id = req.params.id;
-    db.get().collection('Departments').findOne({"_id":objectId(id)}, function(err, result){
-        console.log(result);
-        if(err) return console.log(err);
-        res.render('departments_edit', {
-            Title: "Departments",
-            Action: "Edit",
-            Department : result
+    try{
+        var id = objectId(req.params.id);
+        db.get().collection('Departments').findOne({"_id":id}, function(err, result){
+            console.log(result);
+            if(err) throw err;
+            res.render('departments_edit', {
+                Title: "Departments",
+                Action: "Edit",
+                Department : result
+            });
         });
-    });
-    //res.send('edit');
+    } catch(error){
+        res.send('Unexpected error. Details: '+error.message)
+    }
+    
+});
+
+router.post('/edit', function(req, res, next){
+    var collection = db.get().collection('Departments');
+    try{
+        var id = objectId(req.body._id);
+        collection.find({"_id": id}, {$exists: true}).toArray(function(err, result) //find if a value exists
+        {     
+            if(result.length>0) 
+            {
+                collection.updateOne({"_id":id},{Name:req.body.Name, Code:req.body.Code}, function(err, res){
+                    if(err) throw err;
+                });
+            }            
+            res.redirect('/departments');            
+        });
+    }catch(error){
+        res.send('Unexpected error. Details: '+error.message)
+    }
+});
+
+router.post('/delete', function(req, res, next){
+    try{
+        var collection = db.get().collection('Departments');
+        var id = objectId(req.body._id);
+        collection.find({"_id": id}, {$exists: true}).toArray(function(err, result) //find if a value exists
+        {     
+            if(result.length>0) 
+            {
+                collection.deleteOne({"_id":id}, function(err, obj) {
+                    if(err) throw err;
+                });
+            }            
+            res.redirect('/departments');            
+        });
+        
+    } catch(error){
+        res.send('Unexpected error. Details: '+error.message)
+    }
 });
 
 module.exports = router;
