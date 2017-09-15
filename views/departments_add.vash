@@ -21,6 +21,7 @@
                                 @html.Label("Name", "Name", {class:"control-label col-sm-2"})
                                 <div class="col-sm-6">
                                     @html.TextBox("Name", {class:"form-control", placeholder:"Enter Name"})
+                                    @html.ValidationMessage("Name", model.Errors, {class:"help-block text-danger"})                                    
                                 </div>
                             </div>
 
@@ -28,6 +29,7 @@
                                 @html.Label("Code", "Code", {class:"control-label col-sm-2"})
                                 <div class="col-sm-6">
                                     @html.TextBox("Code", {class:"form-control", placeholder:"Enter Code"})
+                                    @html.ValidationMessage("Code", model.Errors, {class:"help-block text-danger"})
                                 </div>
                             </div>
                     

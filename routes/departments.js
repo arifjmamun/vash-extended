@@ -1,6 +1,9 @@
 var express = require('express');
 var extension = require('../helper/extension');
 var router = express.Router();
+const { check, validationResult } = require('express-validator/check');
+const { matchedData } = require('express-validator/filter');
+
 
 var db = require('../db');
 var objectId = require('mongodb').ObjectId;
@@ -19,17 +22,41 @@ router.get('/', function (req, res, next) {
 router.get('/add', function(req, res, next){
     var model = {
         Title: "Department",
-        Action: "Add New"
+        Action: "Add New",
+        Errors : []
     };
     res.render('departments_add', model);
 });
 
-router.post('/add', function(req, res, next){
-    db.get().collection('Departments').save(req.body, function(err, result){
-        if(err) throw err;
-        console.log('Data saved.');
-        res.redirect('/departments');
-    });
+router.post('/add', [
+    check('Name')
+        .not().isEmpty().withMessage('Name cannot be empty.')       
+        .isLength({min:1, max:100}).withMessage('Name valid range is 1-100 char.'),
+    check('Code')
+        .not().isEmpty().withMessage('Code cannot be empty.')
+        .isLength({min:1, max:5}).withMessage('Code valid range is 1-5 char.')
+],function (req, res, next) {
+    var collection = db.get().collection('Departments');
+    var errors = validationResult(req);
+    
+    if(errors.isEmpty()){ 
+        collection.save(req.body, function(err, result){
+            if(err) throw err;
+            console.log('Data saved.');
+            res.redirect('/departments');
+        });
+    }
+    else{
+        console.log(errors.mapped());
+        var model = {
+            Title: "Department",
+            Action: "Add New",
+            Errors : errors.mapped() 
+        };
+        res.render('departments_add', model);        
+    }
+    console.log(req.getValidationResult());
+    return;
 });
 
 router.get('/edit/:id', function(req, res, next){

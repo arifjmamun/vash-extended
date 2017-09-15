@@ -6,3 +6,8 @@ body {
 a {
   color: #00B7FF;
 }
+
+.text-danger{
+  color: red;
+  font-size: 10;
+}
